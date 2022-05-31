@@ -14,7 +14,7 @@ import com.brickmate.medifoodcompose.R
 // Set of Material typography styles to start with
 val noSanFamily = FontFamily(
     Font(R.font.noto_san_bold, FontWeight.Bold),
-    Font(R.font.noto_san_medium, FontWeight.SemiBold),
+    Font(R.font.noto_san_medium, FontWeight.Medium),
     Font(R.font.noto_san_regular, FontWeight.Normal),
 
     )
@@ -33,6 +33,13 @@ val Typography = Typography(
         fontFamily = noSanFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
+        platformStyle = PlatformTextStyle(includeFontPadding = false)
+
+    ),
+    h4 = TextStyle(
+        fontFamily = noSanFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 9.sp,
         platformStyle = PlatformTextStyle(includeFontPadding = false)
 
     ),

@@ -1,31 +1,26 @@
-package com.brickmate.medifoodcompose.ui_component
+package com.brickmate.medifoodcompose.ui_component.drawer
 
-import android.graphics.Typeface
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.fontResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.brickmate.medifoodcompose.ui.theme.*
 import com.brickmate.medifoodcompose.R
-import com.walnash.navigationdrawer.ui_component.DrawerItem
+import com.brickmate.medifoodcompose.ui.theme.AppTextStyle.regular12
+import com.brickmate.medifoodcompose.ui.theme.AppTextStyle.semiBold16
+import com.brickmate.medifoodcompose.ui.theme.AppTextStyle.semiBold24Blue
 
 
 @Composable
@@ -73,20 +68,29 @@ fun NavHeader() {
             Image(
 
                 painter = painterResource(id = R.drawable.image_avatar),
-                contentDescription ="",
-                contentScale= ContentScale.Crop,
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
                 alignment = Alignment.Center,
-                modifier= Modifier
+                modifier = Modifier
                     .size(94.dp)
                     .clip(CircleShape)
             )
             Spacer(modifier = Modifier.height(4.dp))
-             Text(text = "Martin Odegard", style = MaterialTheme.typography.h1 ,textAlign = TextAlign.Start,modifier = Modifier.width(200.dp))
-             Text(text = "72kg ∙ 남 ∙ 정상", style = MaterialTheme.typography.h3 ,textAlign = TextAlign.Start,modifier = Modifier.width(200.dp))
+            Text(
+                text = "Martin Odegard",
+                style = semiBold24Blue,
+                textAlign = TextAlign.Start,
+                modifier = Modifier.width(200.dp)
+            )
+            Text(
+                text = "72kg ∙ 남 ∙ 정상",
+                style = regular12,
+                textAlign = TextAlign.Start,
+                modifier = Modifier.width(200.dp)
+            )
 
         }
-   
-      
+
 
     }
 }
@@ -113,6 +117,9 @@ fun NavItem(modifier: Modifier = Modifier, painterResource: Int, title: String) 
 
     Row(
         modifier = Modifier
+            .clickable {
+
+            }
             .fillMaxWidth()
             .padding(start = 24.dp)
             .padding(vertical = 12.dp),
@@ -124,7 +131,7 @@ fun NavItem(modifier: Modifier = Modifier, painterResource: Int, title: String) 
             Modifier.width(27.dp)
         )
         Spacer(modifier = Modifier.width(40.5.dp))
-        Text(text = title, style = MaterialTheme.typography.body1 )
+        Text(text = title, style = semiBold16)
     }
     Box(
         modifier = Modifier
@@ -147,7 +154,7 @@ val listDrawerItem = listOf(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun DrawerPreview() {
-    MedifoodComposeTheme{
+    MedifoodComposeTheme {
         NavDrawer()
 
     }

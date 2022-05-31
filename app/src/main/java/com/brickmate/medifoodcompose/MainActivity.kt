@@ -1,24 +1,35 @@
 package com.brickmate.medifoodcompose
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
+
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.brickmate.medifoodcompose.screen.AnalyticsScreen
+import com.brickmate.medifoodcompose.screen.HomeScreen
+import com.brickmate.medifoodcompose.screen.MapScreen
+import com.brickmate.medifoodcompose.screen.ShoppingScreen
 import com.brickmate.medifoodcompose.ui.theme.MainBlue
 import com.brickmate.medifoodcompose.ui.theme.MedifoodComposeTheme
-import com.brickmate.medifoodcompose.ui_component.NavDrawer
+import com.brickmate.medifoodcompose.ui_component.bottom_navigation.AppBottomNavigation
+import com.brickmate.medifoodcompose.ui_component.bottom_navigation.BottomNavItem
+import com.brickmate.medifoodcompose.ui_component.drawer.NavDrawer
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +45,7 @@ class MainActivity : ComponentActivity() {
                     systemUiController.setSystemBarsColor(
                         color = MainBlue,
 
-                    )
+                        )
 
                     // setStatusBarsColor() and setNavigationBarColor() also exist
                 }
@@ -47,23 +58,52 @@ class MainActivity : ComponentActivity() {
 
 @Preview
 @Composable
-fun MainApp(modifier: java.lang.reflect.Modifier = java.lang.reflect.Modifier()){
+fun MainApp() {
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
-    Surface() {
-        Scaffold(
-            scaffoldState = scaffoldState,
-            topBar = {
-                TopBar(title = "Ho",buttonIcon = Icons.Default.Menu, onButtonClicked = {
+    val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    var currentRoute by remember{
+        mutableStateOf<String?>(null)
+    }
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+                TopBar(buttonIcon = Icons.Default.Menu,navRoot = currentRoute, onButtonClicked = {
                     coroutineScope.launch {
-                        Log.d("Henry", "onCreate: ")
                         scaffoldState.drawerState.open()
                     }
                 })
             },
-            drawerContent = { NavDrawer()},
-            content = {}
-        )
+        drawerContent = { NavDrawer() },
+        bottomBar = { AppBottomNavigation(navController = navController, onPageChange = {
+            currentRoute = it
+        }) }
+    ) {
+
+        BottomNavigationGraph(navController = navController,it)
+    }
+}
+
+
+@Composable
+fun BottomNavigationGraph(navController: NavHostController, paddingValues: PaddingValues) {
+    NavHost(navController, startDestination = BottomNavItem.Home.screen_route) {
+        composable(BottomNavItem.Home.screen_route) {
+            HomeScreen {}
+        }
+        composable(BottomNavItem.Analytics.screen_route) {
+            AnalyticsScreen {}
+        }
+        composable(BottomNavItem.Map.screen_route) {
+            MapScreen {}
+        }
+        composable(BottomNavItem.Shopping.screen_route) {
+            ShoppingScreen {}
+        }
+
+
+
     }
 }
 
