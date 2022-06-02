@@ -12,6 +12,7 @@ import androidx.navigation.compose.*
 import com.brickmate.medifoodcompose.R
 import com.brickmate.medifoodcompose.ui.theme.MainBlue
 import com.brickmate.medifoodcompose.ui.theme.MainGray
+import com.brickmate.medifoodcompose.ui.theme.MainMoreBlue
 
 sealed class BottomNavItem(var title: String, var icon: Int, var screen_route: String) {
 
@@ -40,22 +41,14 @@ fun AppBottomNavigation(navController: NavController,onPageChange: (String) -> U
                 icon = { Icon(painterResource(id = item.icon), contentDescription = "") },
                 label = { Text(text = item.title,
                     fontSize = 9.sp) },
-                selectedContentColor = MainBlue,
+                selectedContentColor = MainMoreBlue,
                 unselectedContentColor = MainGray,
                 alwaysShowLabel = true,
                 selected = currentRoute == item.screen_route,
                 onClick = {
-                    navController.navigate(item.screen_route) {
-
-                        navController.graph.startDestinationRoute?.let { screen_route ->
-                            popUpTo(screen_route) {
-                                saveState = true
-                            }
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                    onPageChange.invoke(item.title)
+                    navController.popBackStack()
+                    navController.navigate(item.screen_route)
+                    onPageChange.invoke(item.screen_route)
                 }
             )
         }

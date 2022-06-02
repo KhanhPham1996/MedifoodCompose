@@ -1,4 +1,4 @@
-package com.brickmate.medifoodcompose.screen
+package com.brickmate.medifoodcompose.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,34 +13,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.brickmate.medifoodcompose.R
 import com.brickmate.medifoodcompose.data_model.ScheduleDate
+import com.brickmate.medifoodcompose.extention.addDate
 import com.brickmate.medifoodcompose.extention.getDateFormat
 import com.brickmate.medifoodcompose.extention.getDateOfWeek
-import com.brickmate.medifoodcompose.ui.theme.AppTextStyle.medium12
-import com.brickmate.medifoodcompose.R
-import com.brickmate.medifoodcompose.extention.addDate
-
-import com.brickmate.medifoodcompose.ui.theme.AppTextStyle.semiBold16
-import com.brickmate.medifoodcompose.ui.theme.MainBackGround
+import com.brickmate.medifoodcompose.ui.theme.AppTextStyle
 import com.brickmate.medifoodcompose.ui.theme.SelectedBackGround
-import com.brickmate.medifoodcompose.util.DateTimeUtil.getSevenDateOfWeek
+import com.brickmate.medifoodcompose.util.DateTimeUtil
 import java.util.*
 
-@Composable
-fun HomeScreen(openDrawer: () -> Unit) {
-    Surface(modifier = Modifier.background(MainBackGround)) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MainBackGround)
-        ) {
-            OneWeekSchedule()
-
-        }
-    }
-}
 @Composable
 fun OneWeekSchedule(modifier: Modifier = Modifier) {
     var today by remember {
@@ -50,11 +33,11 @@ fun OneWeekSchedule(modifier: Modifier = Modifier) {
         mutableStateOf(Date())
     }
 
-    val currentWeekList = getSevenDateOfWeek(today)
+    val currentWeekList = DateTimeUtil.getSevenDateOfWeek(today)
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 12.dp, start = 10.dp, end = 10.dp)
+            .padding(top = 12.dp)
             .background(Color.White),
         elevation = 5.dp
     ) {
@@ -71,10 +54,12 @@ fun OneWeekSchedule(modifier: Modifier = Modifier) {
                 painter = painterResource(id = R.drawable.ic_navigate_back),
                 contentDescription = "",
                 modifier = Modifier
-                    .size(16.dp)
+                    .size(25.dp)
+                    .clip(RoundedCornerShape(5.dp))
                     .clickable {
                         today = today.addDate(-7)
-                    },
+                    }
+                    .padding(5.dp),
             )
             Row(
                 modifier = Modifier
@@ -98,10 +83,12 @@ fun OneWeekSchedule(modifier: Modifier = Modifier) {
                 painter = painterResource(id = R.drawable.ic_navigate_next),
                 contentDescription = "",
                 modifier = Modifier
-                    .size(16.dp)
+                    .size(25.dp)
+                    .clip(RoundedCornerShape(5.dp))
                     .clickable {
                         today = today.addDate(7)
-                    },
+                    }
+                    .padding(5.dp),
             )
         }
     }
@@ -121,16 +108,8 @@ fun ItemDate(scheduleDate: ScheduleDate, selectedDate: Date, onSelectDate: (Date
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = scheduleDate.date.getDateOfWeek(), style = medium12)
+        Text(text = scheduleDate.date.getDateOfWeek(), style = AppTextStyle.medium12)
         Spacer(modifier = Modifier.height(5.dp))
-        Text(text = scheduleDate.date.getDateFormat(), style = medium12)
+        Text(text = scheduleDate.date.getDateFormat(), style = AppTextStyle.medium12)
     }
 }
-@Preview
-@Composable
-fun PreviewItemDate() {
-    HomeScreen {
-    }
-}
-
-
