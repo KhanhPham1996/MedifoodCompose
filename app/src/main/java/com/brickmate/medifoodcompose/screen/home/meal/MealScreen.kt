@@ -1,8 +1,6 @@
-package com.brickmate.medifoodcompose.screen.home
+package com.brickmate.medifoodcompose.screen.home.meal
 
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -15,17 +13,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.view.ScrollingView
 import com.brickmate.medifoodcompose.R
+import com.brickmate.medifoodcompose.screen.home.OneWeekSchedule
 import com.brickmate.medifoodcompose.ui.theme.*
-import com.brickmate.medifoodcompose.ui.theme.AppTextStyle.bold20
 import com.brickmate.medifoodcompose.ui.theme.AppTextStyle.medium10
-import com.brickmate.medifoodcompose.ui.theme.AppTextStyle.medium16
 import com.brickmate.medifoodcompose.ui.theme.AppTextStyle.semiBold16
-
-import com.brickmate.medifoodcompose.ui.theme.AppTextStyle.semiBold24Blue
-import org.intellij.lang.annotations.JdkConstants
-import java.sql.Time
 
 @Composable
 fun MealScreen(modifier: Modifier = Modifier) {
@@ -34,12 +26,13 @@ fun MealScreen(modifier: Modifier = Modifier) {
         OneWeekSchedule()
         ProgressMeal(modifier = Modifier.padding(top = 15.dp))
         Spacer(modifier = Modifier.height(24.dp))
-        Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(bottom = 50.dp)) {
+        Column(modifier = Modifier.verticalScroll(scrollState)) {
             ItemMealTab(mealTabUI = MealTabUI.Morning)
             Spacer(modifier = Modifier.height(40.dp))
             ItemMealTab(mealTabUI = MealTabUI.Launch)
             Spacer(modifier = Modifier.height(40.dp))
             ItemMealTab(mealTabUI = MealTabUI.Dinner)
+            Spacer(modifier = Modifier.height(100.dp))
         }
 
     }
@@ -100,7 +93,7 @@ fun PreviewProgress() {
 fun TimeTab(modifier: Modifier = Modifier, mealTabUI: MealTabUI) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(4.dp))
             .background(BlueMealTab)
             .padding(8.dp),
         horizontalArrangement = Arrangement.Center,
@@ -121,26 +114,24 @@ fun TimeTab(modifier: Modifier = Modifier, mealTabUI: MealTabUI) {
 fun PointTab(modifier: Modifier = Modifier) {
     Row(
         modifier
-            .height(20.dp)
-            .clip(RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(20.dp))
             .background(LightRed)
-            .padding(3.dp),
+            .padding(vertical =  4.dp, horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(painter = painterResource(id = R.drawable.ic_target), contentDescription = "")
-        Spacer(modifier = Modifier.width(4.dp))
+        Spacer(modifier = Modifier.width(8.dp))
         Text(text = "30 points", style = medium10)
     }
 }
 
 @Composable
-fun CalorTab(modifier: Modifier = Modifier) {
+fun CalorieTab(modifier: Modifier = Modifier) {
     Row(
         modifier
-            .height(20.dp)
-            .clip(RoundedCornerShape(10.dp))
+        .clip(RoundedCornerShape(20.dp))
             .background(LightYellow)
-            .padding(3.dp),
+            .padding(vertical =  4.dp, horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(painter = painterResource(id = R.drawable.ic_klor), contentDescription = "")
@@ -151,19 +142,19 @@ fun CalorTab(modifier: Modifier = Modifier) {
 
 @Composable
 fun MealTab(modifier: Modifier = Modifier) {
-
-    Row(
-        modifier = modifier
-            .padding(start = 17.dp, top = 12.dp)
-            .clip(RoundedCornerShape(10.dp))
+    Surface(
+        modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
-            .padding(top = 48.dp, bottom = 17.dp, start = 20.dp)
 
-
+            .padding(start = 17.dp, top = 12.dp),
+        elevation = 4.dp,
+        color = MaterialTheme.colors.surface,
+        shape = Shapes.medium,
     ) {
-        Box(
 
+        Row(
+            modifier = Modifier
+                .padding(top = 48.dp, bottom = 17.dp, start = 20.dp)
         ) {
             Image(
 
@@ -174,11 +165,12 @@ fun MealTab(modifier: Modifier = Modifier) {
                     .clip(RoundedCornerShape(5.dp)),
                 contentScale = ContentScale.FillBounds
             )
+
         }
     }
 
-
 }
+
 
 @Composable
 fun ItemMealTab(modifier: Modifier = Modifier, mealTabUI: MealTabUI) {
@@ -187,7 +179,7 @@ fun ItemMealTab(modifier: Modifier = Modifier, mealTabUI: MealTabUI) {
         Row() {
             TimeTab(mealTabUI = mealTabUI)
             PointTab(modifier = Modifier.padding(start = 4.dp, top = 4.dp))
-            CalorTab(modifier = Modifier.padding(start = 4.dp, top = 4.dp))
+            CalorieTab(modifier = Modifier.padding(start = 4.dp, top = 4.dp))
         }
     }
 }
